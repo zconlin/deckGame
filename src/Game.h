@@ -33,6 +33,8 @@ public:
     void endGame();
 
     Card playCard();
+
+    Card takeCard();
 };
 
 #endif

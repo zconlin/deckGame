@@ -18,8 +18,9 @@ public:
     std::string name;
     Deck deck;
     Deck hand;
-    int health;
+    int health = 4;
 private:
+    int healthValue = 4;
 };
 
 #endif

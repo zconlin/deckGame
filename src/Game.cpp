@@ -30,7 +30,7 @@ int Game::randomNumber() {
 }
 
 void Game::initializeDeck(Player player) {
-    // Initialize deck with 20 random cards for the Player
+    // Initialize deck with random cards for the Player
     Player initPlayer = player;
     int deckSize = initPlayer.deck.getDeckSize();
     for (int i = 0; i < deckSize; ++i) {
@@ -195,17 +195,21 @@ void Game::lineBreak() {
     cout << "_________________________________________________________________________________" << endl;
 }
 
+Card Game::takeCard() {
+// Player 1 gets a random card from Player 2's deck
+    int randomIndex = rand() % player2.deck.getSize();
+    Card newCard = player2.deck.getCard(randomIndex);
+    player1.deck.addCard(newCard);
+
+    cout << "Player 1 gets a new card: attack=" << newCard.attack << ", defense=" << newCard.defense << endl;
+    return newCard;
+}
+
 void Game::endGame() {
     if (player1.health <= 0 && player2.health <= 0) {
         if (player1.health > player2.health) {
             cout << player1.getName() << " wins!" << endl;
-
-            // Player 1 gets a random card from Player 2's deck
-            int randomIndex = rand() % player2.deck.getSize();
-            Card newCard = player2.deck.getCard(randomIndex);
-            player1.deck.addCard(newCard);
-
-            cout << "Player 1 gets a new card: attack=" << newCard.attack << ", defense=" << newCard.defense << endl;
+            takeCard();
         }
         else {
             cout << "Player 2 wins!" << endl;
@@ -215,13 +219,7 @@ void Game::endGame() {
         cout << "Player 2 wins!" << endl;
     } else if (player2.health <= 0) {
         cout << player1.getName() << " wins!" << endl;
-
-        // Player 1 gets a random card from Player 2's deck
-        int randomIndex = rand() % player2.deck.getSize();
-        Card newCard = player2.deck.getCard(randomIndex);
-        player1.deck.addCard(newCard);
-
-        cout << "Player 1 gets a new card: attack=" << newCard.attack << ", defense=" << newCard.defense << endl;
+        takeCard();
     }
     while (input != 'y' || input != 'n') {
         cout << "Play again? y/n.";
