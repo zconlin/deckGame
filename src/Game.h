@@ -21,6 +21,7 @@ public:
     char input;
     bool firstTime = true;
     int drawnCards = 0;
+    Deck backupDeck = player1.deck;
 
     int randomNumber();
     void battle();
@@ -29,13 +30,9 @@ public:
     void initializeDeck(Player player);
     void play();
     static void lineBreak();
-
     void endGame();
-
     Card playCard();
-
     Card takeCard();
-
 };
 
 #endif

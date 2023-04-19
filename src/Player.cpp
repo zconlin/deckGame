@@ -16,11 +16,11 @@ Deck& Player::getDeck() {
 
 //TODO Make one variable for health
 int Player::getHealth() {
-    health = 4;
+    health = 1;
     return health;
 }
 
 int Player::setHealth(Player player) {
-    health = 4;
+    health = 1;
     return health;
 }

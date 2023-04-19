@@ -126,8 +126,7 @@ Card Game::playCard() {
     Card playCard = Card(100, 100);
 
     cout << "Choose a card to play, or press d to view your deck:" << endl;
-    // TODO: Make this a for loop to iterate through cards in hand, play card at index i then remove that card from hand
-    // to account for the fact that the hand size will change
+
     while (input != '1' || input != '2' || input != '3' || input != '4') {
         cin >> input;
         if (input == '1' || input == '2' || input == '3' || input == '4') {
@@ -185,7 +184,7 @@ void Game::play() {
             cin >> input;
         }
     }
-    Deck resetDeck = player1.deck;
+    backupDeck = player1.deck;
     Deck shuffledDeck = player1.deck.shuffleDeck(player1.deck);
     player1.deck = shuffledDeck;
 
@@ -196,6 +195,7 @@ void Game::play() {
         cin >> input;
         if (input == 'y') {
             shuffledDeck = player1.deck.shuffleDeck(player1.deck);
+            player1.deck = shuffledDeck;
             cout << "Your deck has been shuffled." << endl;
         }
         player1.deck.printDeck();
@@ -217,9 +217,9 @@ Card Game::takeCard() {
 // Player 1 gets a random card from Player 2's deck
     int randomIndex = rand() % player2.deck.getSize();
     Card newCard = player2.deck.getCard(randomIndex);
-    player1.deck.addCard(newCard);
-
-    cout << "Player 1 gets a new card: attack=" << newCard.attack << ", defense=" << newCard.defense << endl;
+//    player1.deck.addCard(newCard);
+    backupDeck.addCard(newCard);
+    cout << "Player 1 gets a new card: " << newCard.attack << "/" << newCard.defense << endl;
     return newCard;
 }
 
@@ -229,20 +229,23 @@ void Game::endGame() {
             cout << player1.getName() << " wins!" << endl;
             takeCard();
         }
-        else {
+        if (player2.health == player1.health) {
+            cout << "Tie game! ...but in life there are no ties so you lose" << endl;
+        } else {
             cout << "Player 2 wins!" << endl;
         }
     }
-    if (player1.health <= 0) {
-        cout << "Player 2 wins!" << endl;
-    } else if (player2.health <= 0) {
+    else if (player1.health <= 0 && player2.health > 0) {
+            cout << "Player 2 wins!" << endl;
+    }
+    else if (player1.health > 0 && player2.health <= 0) {
         cout << player1.getName() << " wins!" << endl;
         takeCard();
     }
     else {
         cout << "Error: endGame() called when no player has 0 health." << endl;
     }
-    player1.deck = resetDeck;
+
     while (input != 'y' || input != 'n') {
         cout << "Play again? y/n.";
         cin >> input;
@@ -251,6 +254,8 @@ void Game::endGame() {
             round = 0;
             player1.health = player1.setHealth(player1);
             player2.health = player2.setHealth(player2);
+            player1.deck = backupDeck;
+            cout << player1.deck.getSize() << endl;
             play();
         }
         else if (input == 'n') {
