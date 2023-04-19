@@ -38,6 +38,7 @@ void Game::initializeDeck(Player player) {
         int defense = randomNumber();
         player1.deck.addCard(Card(attack, defense));
     }
+
     //TODO Hardcode opponents rather than randomize
     for (int i = 0; i < deckSize; ++i) {
         int attack = randomNumber();
@@ -184,10 +185,27 @@ void Game::play() {
             cin >> input;
         }
     }
+    Deck resetDeck = player1.deck;
+    Deck shuffledDeck = player1.deck.shuffleDeck(player1.deck);
+    player1.deck = shuffledDeck;
+
+    // while loop that prompts user to shuffle deck if they don't like the order, then print the shuffled deck, c to continue
+    cin >> input;// debug start
+    while (input != 'c') {
+        cout << "Would you like to shuffle your deck? (y/n)";
+        cin >> input;
+        if (input == 'y') {
+            shuffledDeck = player1.deck.shuffleDeck(player1.deck);
+            cout << "Your deck has been shuffled." << endl;
+        }
+        player1.deck.printDeck();
+        cin >> input;
+    } // debug end
 
     while (player1.health > 0 && player2.health > 0) {
         battle();
     }
+
     endGame();
 }
 
@@ -221,6 +239,10 @@ void Game::endGame() {
         cout << player1.getName() << " wins!" << endl;
         takeCard();
     }
+    else {
+        cout << "Error: endGame() called when no player has 0 health." << endl;
+    }
+    player1.deck = resetDeck;
     while (input != 'y' || input != 'n') {
         cout << "Play again? y/n.";
         cin >> input;
@@ -244,3 +266,4 @@ void Game::endGame() {
         }
     }
 }
+

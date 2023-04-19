@@ -35,6 +35,7 @@ public:
     Card playCard();
 
     Card takeCard();
+
 };
 
 #endif

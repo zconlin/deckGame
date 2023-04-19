@@ -18,6 +18,7 @@ public:
     void addCard(Card card);
     void removeCard(int index);
     Card getCard(int index);
+    Deck shuffleDeck(Deck deck);
     string printDeck();
     string showHand();
     int getSize();

@@ -22,7 +22,7 @@ string Deck::printDeck() { // Currently just a void with couts, change to return
     string output = "";
     Game::lineBreak();
     for (int i = 0; i < cards.size(); i++) {
-        cout << "Card " << i + 1 << ": " << cards[i].getAttack() << "/" << cards[i].getDefense() << endl; // TODO: Once showHand is implemented, remove the carcd numbers
+        cout << "Card " << i + 1 << ": " << cards[i].getAttack() << "/" << cards[i].getDefense() << endl;
     }
     Game::lineBreak();
     return output;
@@ -39,6 +39,18 @@ string Deck::showHand() {
     }
     Game::lineBreak();
     return output;
+}
+
+Deck Deck::shuffleDeck (Deck deck) {
+    Deck shuffledDeck;
+    int deckSize = deck.getDeckSize();
+    for (int i = 0; i < deckSize; i++) {
+        int drawCardIndex = rand() % deck.getSize();
+        Card drawCard = deck.getCard(drawCardIndex);
+        shuffledDeck.addCard(drawCard);
+        deck.removeCard(drawCardIndex);
+    }
+    return shuffledDeck;
 }
 
 int Deck::getDeckSize() {
